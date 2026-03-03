@@ -1,4 +1,4 @@
-## Sistema de gerencimento de conhecimentos
+## Sistema de Gerencimento de Trocas de Conhecimentos
 
 
 
