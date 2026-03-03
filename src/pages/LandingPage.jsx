@@ -6,7 +6,7 @@ const LandingPage = () => (
     <header className="bg-dark text-white py-5 text-center">
       <h1 className="display-3 fw-bold">Troca de Conhecimento</h1>
       <p className="lead">Aprenda o que você precisa, ensine o que você ama.</p>
-      <Link to="/sistema" className="btn btn-primary btn-lg px-5 shadow">Entrar na Plataforma</Link>
+      <Link to="/dashboard" className="btn btn-primary btn-lg px-5 shadow">Entrar na Plataforma</Link>
     </header>
     
     <section className="container py-5 text-center">
