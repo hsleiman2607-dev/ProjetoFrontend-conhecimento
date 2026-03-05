@@ -8,6 +8,9 @@ import { Edit, Trash2, PlusCircle, X } from 'lucide-react';
 const Dashboard = () => {
   const [ofertas, setOfertas] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [editandoId, setEditandoId] = useState(null);
+  ///const[editarOferta, setEditarOferta] = useState(null);
+
   const [formData, setFormData] = useState({
     titulo: '',
     descricao: '',
@@ -47,49 +50,87 @@ const Dashboard = () => {
     carregarOfertas();
   }, []);
 
-
-  // 2. DELETAR: Remove a oferta do banco e da tela
+  // função para deletar uma oferta
   const deletarOferta = async (id) => {
     if (window.confirm("Deseja realmente excluir esta oferta?")) {
-      try {
-        await axios.delete(`${API_URL}/${id}`);
-        // Filtra o estado para remover o item sem recarregar a página
-        setOfertas(ofertas.filter(o => o.id !== id));
-        alert("Oferta excluída com sucesso!");
-      } catch (error) {
-        console.error("Erro ao deletar:", error);
-        alert("Erro ao excluir a oferta. Verifique o console.");
-      }
+        try {
+            // Certifique-se que a URL está correta (ex: porta 8080)
+            await axios.delete(`http://localhost:8080/ofertas/${id}`);
+            
+            // Atualiza a lista removendo o item deletado
+            setOfertas(ofertas.filter(o => o.id !== id));
+            alert("Oferta excluída!");
+        } catch (error) {
+            console.error("Erro ao deletar:", error);
+            alert("Erro ao excluir a oferta no servidor.");
+        }
     }
-  };
+};
 
-  // 3. CRIAR: Envia o formulário para o app.post("/ofertas")
- const handleSubmit = async (e) => {
-  e.preventDefault();
-  try {
+
+
+
+
+
+
+const editarOferta = async (id, dadosAtualizados) => {
+    try {
+        // Realiza a chamada PUT para o ID específico
+        const response = await axios.put(`http://localhost:8080/ofertas/${id}`, dadosAtualizados);
+        
+        console.log("Oferta atualizada:", response.data);
+        
+        // Atualiza a lista localmente para evitar um novo GET
+        setOfertas(ofertas.map(o => o.id === id ? response.data : o));
+        
+        alert("Oferta atualizada com sucesso!");
+    } catch (error) {
+        console.error("Erro ao atualizar:", error);
+        alert("Erro ao atualizar a oferta no servidor.");
+    }
+};
+
+const handleSubmit = async (e) => {
+    e.preventDefault();
+    
+    // Converte IDs para Number para evitar Bad Request no Prisma
     const payload = {
-      titulo: formData.titulo,
-      descricao: formData.descricao || null,
-      nivel: formData.nivel || null,
-      categoria_ID: Number(formData.categoria_ID), // Garante que é número
-      pessoa_ID: Number(formData.pessoa_ID)     // Garante que é número
+        titulo: formData.titulo,
+        descricao: formData.descricao,
+        categoria_ID: Number(formData.categoria_ID),
+        pessoa_ID: Number(formData.pessoa_ID)
     };
 
-    const response = await axios.post('http://localhost:8080/ofertas', payload);
-    console.log("Sucesso:", response.data);
-    
+    if (editandoId) {
+        // Chama a função de edição declarada acima
+        await editarOferta(editandoId, payload);
+        setEditandoId(null);
+    } else {
+        // Lógica de criação original
+        try {
+            await axios.post('http://localhost:8080/ofertas', payload);
+            carregarOfertas();
+        } catch (error) {
+            alert("Erro ao criar oferta.");
+        }
+    }
+
     setIsModalOpen(false);
     setFormData({ titulo: '', descricao: '', nivel: '', categoria_ID: '', pessoa_ID: '' });
-    carregarOfertas();
-  } catch (error) {
-    // Se o erro persistir, olhe a aba 'Network' do F12 para ver o erro do Prisma
-    console.error("Erro completo:", error.response || error);
-    alert("Erro ao criar. Verifique se os IDs existem no banco.");
-  }
 };
-  useEffect(() => {
-    carregarOfertas();
-  }, []);
+const abrirModalEdicao = (oferta) => {
+    setEditandoId(oferta.id);
+    setFormData({
+        titulo: oferta.titulo,
+        descricao: oferta.descricao,
+        nivel: oferta.nivel || '',
+        categoria_ID: oferta.categoria_ID,
+        pessoa_ID: oferta.pessoa_ID
+    });
+    setIsModalOpen(true);
+};
+
+
 
   return (
     <div className="container py-5">
@@ -116,7 +157,7 @@ const Dashboard = () => {
               <td>{oferta.titulo}</td>
               <td>{oferta.descricao}</td>
               <td>
-                <button className="btn btn-sm btn-warning me-2">
+                <button className="btn btn-sm btn-warning me-2" onClick={() => abrirModalEdicao(oferta)}>
                   <Edit size={18} />
                 </button>
                 <button className="btn btn-sm btn-danger" onClick={() => deletarOferta(oferta.id)}>
