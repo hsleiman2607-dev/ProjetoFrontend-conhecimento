@@ -41,14 +41,19 @@ const Dashboard = () => {
   useEffect(() => { carregarDados(); }, [abaAtiva]);
 
   // --- CRUD OPERAÇÕES ---
-  const deletarItem = async (id) => {
-    if (window.confirm(`Excluir este item de ${abaAtiva}?`)) {
-      try {
-        await axios.delete(`${API_URL}/${abaAtiva}/${id}`);
-        setDados(dados.filter(item => item.id !== id));
-      } catch (error) { alert("Erro ao deletar."); }
+ const deletarItem = async (id) => {
+  if (window.confirm(`Excluir este item de ${abaAtiva}?`)) {
+    try {
+      await axios.delete(`${API_URL}/${abaAtiva}/${id}`);
+      setDados(dados.filter(item => item.id !== id));
+    } catch (error) {
+      // Verifica se o backend enviou uma mensagem específica
+      const mensagem = error.response?.data?.error || "Erro ao deletar. Verifique se existem vínculos ativos.";
+      alert(mensagem);
+      console.error("Detalhes do erro:", error.response?.data);
     }
-  };
+  }
+};
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -92,7 +97,8 @@ const Dashboard = () => {
       ...formData,
       ...item,
       // Garante que o ID da categoria seja mapeado corretamente para o select
-      categoria_ID: item.categoria_ID || item.CatID || ''
+      categoria_ID: item.categoria_ID || item.CatID || '',
+      pessoa_ID: item.pessoa_ID || ''
     });
     setIsModalOpen(true);
   };
@@ -171,12 +177,12 @@ const Dashboard = () => {
                     <select className="form-select mb-2" required value={formData.categoria_ID} 
                       onChange={e => setFormData({...formData, categoria_ID: e.target.value})}>
                       <option value="">Selecione Categoria...</option>
-                      {categorias.map(c => <option key={c.id} value={c.id}>{c.CatNome}</option>)}
+                      {categorias.map(c => <option key={c.CatID} value={c.CatID}>{c.CatNome}</option>)}
                     </select>
                     <select className="form-select mb-2" required value={formData.pessoa_ID} 
                       onChange={e => setFormData({...formData, pessoa_ID: e.target.value})}>
                       <option value="">Selecione Responsável...</option>
-                      {pessoas.map(p => <option key={p.id} value={p.id}>{p.nome_completo}</option>)}
+                      {pessoas.map(p => <option key={p.PesID} value={p.PesID}>{p.nome_completo}</option>)}
                     </select>
                   </>
                 )}
@@ -190,7 +196,7 @@ const Dashboard = () => {
                     <select className="form-select mb-2" required value={formData.categoria_ID} 
                       onChange={e => setFormData({...formData, categoria_ID: e.target.value})}>
                       <option value="">Vincular Categoria...</option>
-                      {categorias.map(c => <option key={c.id} value={c.id}>{c.CatNome}</option>)}
+                      {categorias.map(c => <option key={c.CatID} value={c.CatID}>{c.CatNome}</option>)}
                     </select>
                   </>
                 )}
