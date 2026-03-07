@@ -29,7 +29,19 @@ Siga os passos abaixo para configurar o ambiente local:
   ** Conectar Com API : **
   Este é o repositório do **Front-end**.
 - 🖥️ **Front-end**: (Você está aqui)
-- ⚙️ **Back-end**: [Acesse o repositório da API aqui](https://github.com/seu-usuario/seu-repo-api)
+- ⚙️ **Back-end**: [Acesse o repositório da API aqui](https://github.com/hsleiman2607-dev/bootcamp-projeto-desenvolvimento-backend.git)
+- **Rode o repositório localmente**
+  ```bash
+  npm run dev
+- Configire env file configuration
+   -- 1. **Instale a biblioteca: npm install dotenv**
+   -- 2. Crie o arquivo .env na raiz do back-end:
+  ```bash
+      PORT=3000
+   DATABASE_URL="postgresql://user:password@localhost:5432/mydb"
+   JWT_SECRET=sua_chave_ultra_secreta
+
+  
      
 
      
