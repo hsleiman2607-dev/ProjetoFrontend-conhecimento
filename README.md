@@ -1,9 +1,14 @@
-## Sistema de Gerencimento de Trocas de Conhecimentos-Front-endProjeto
+## 🚀 Sistema de Gerencimento de Trocas de Conhecimentos-Front-endProjeto
 Uma Web app desenvolvida de um sistema de trocas de conhecimento em interface grafica desenvolvida em ReactJS connectado a uma API para devenvolvimento de um projeto de bootcamp ,aprimorar conhecimentos em ReactJs
 
-## Technologias usadas
-### Front-end -ReactJS
-### Bibliotecas: Boostrap Template
+## 🛠️ Tecnologias Utilizadas
+
+### Front-end
+- **[React.js](https://reactjs.org/)** - Biblioteca para construção da interface.
+- **[Vite](https://vitejs.dev/)** - Build tool rápida para projetos web modernos.
+- **[Bootstrap](https://getbootstrap.com/)** - Framework CSS para design responsivo e componentes.
+- **[Axios](https://axios-http.com/)** - Cliente HTTP para consumo de APIs.
+- **[Lucide React](https://lucide.dev/)** - Biblioteca de ícones.
 
 
 ## 🚀 Como Rodar o Projeto
