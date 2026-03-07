@@ -6,9 +6,32 @@ Uma Web app desenvolvida de um sistema de trocas de conhecimento em interface gr
 ### Bibliotecas: Boostrap Template
 
 
-## 📋 Como Rodar o Projeto
-1. Clone repositorio
-2. Install dependencias : '´´´npm install´´
-3. Rode servidor : npm run dev 
+## 🚀 Como Rodar o Projeto
 
+Siga os passos abaixo para configurar o ambiente local:
+
+1. **Clone o repositório:**
+   ```bash
+   git clone [https://github.com/seu-usuario/seu-repositorio.git](https://github.com/seu-usuario/seu-repositorio.git)
+
+2. **Acesse a pasta do projeto:**
+   ```bash
+   cd seu-repositorio
+   
+3. ** Instale as dependências: **
+   ```bash
+   npm install
+   
+  4. ** Inicie o servidor de desenvolvimento: **
+     ```bash
+     npm run dev
+
+  ** Conectar Com API : **
+  Este é o repositório do **Front-end**.
+- 🖥️ **Front-end**: (Você está aqui)
+- ⚙️ **Back-end**: [Acesse o repositório da API aqui](https://github.com/seu-usuario/seu-repo-api)
+     
+
+     
+   
 
