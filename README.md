@@ -6,9 +6,9 @@ Uma Web app desenvolvida de um sistema de trocas de conhecimento em interface gr
 ### Bibliotecas: Boostrap Template
 
 
-### Como Rodar projeto
+## 📋 Como Rodar o Projeto
 1. Clone repositorio
 2. Install dependencias : '´´´npm install´´
-3. executar : npm run dev
+3. Rode servidor : npm run dev 
 
 
