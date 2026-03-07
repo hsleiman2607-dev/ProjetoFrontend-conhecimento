@@ -1,6 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import axios from "axios";
 import { Edit, Trash2, PlusCircle, X, Tag, Users, Briefcase } from 'lucide-react';
+import { Link } from 'react-router-dom';
+import Navbar from '../components/Adminpanel/Navbar';
+import Footer from '../components/Footer'; // Importe o Footer para o Dashboard
 
 const API_URL = "http://localhost:8080";
 
@@ -91,7 +94,9 @@ const Dashboard = () => {
     }
   };
 
-  const abrirEdicao = (item) => {
+  
+
+  /*const abrirEdicao = (item) => {
     setEditandoId(item.id);
     setFormData({
       ...formData,
@@ -101,16 +106,43 @@ const Dashboard = () => {
       pessoa_ID: item.pessoa_ID || ''
     });
     setIsModalOpen(true);
-  };
+  };*/
+
+  const abrirEdicao = (item) => {
+  // Captura o ID correto independente do nome no banco
+  const idReal = item.PesID || item.CatID || item.id; 
+  
+  setEditandoId(idReal);
+  setFormData({
+    ...formData,
+    ...item,
+    // Garante que o ID da categoria seja mapeado para o select no modal
+    categoria_ID: item.CatID || item.categoria_ID || '',
+    pessoa_ID: item.PesID || item.pessoa_ID || ''
+  });
+  setIsModalOpen(true);
+};
+
+  
 
   const fecharModal = () => {
     setIsModalOpen(false);
     setEditandoId(null);
     setFormData({ titulo: '', descricao: '', categoria_ID: '', pessoa_ID: '', nome_completo: '', email: '', CatNome: '' });
   };
-
+   // Adicione esta função no seu Dashboard
+const abrirNovoRegistro = () => {
+  setEditandoId(null); // Reseta o ID para garantir que é uma criação
+  setFormData({ 
+    titulo: '', descricao: '', categoria_ID: '', pessoa_ID: '', 
+    nome_completo: '', email: '', CatNome: '' 
+  }); // Limpa os campos
+  setIsModalOpen(true); // Abre o modal
+};
   return (
+    
     <div className="container py-5">
+      <Navbar />
       <h1 className="mb-4 fw-bold">Admin Panel</h1>
 
       {/* --- NAVEGAÇÃO POR ABAS --- */}
@@ -142,18 +174,35 @@ const Dashboard = () => {
               <th>Ações</th>
             </tr>
           </thead>
+        
           <tbody>
-            {dados.map((item) => (
-              <tr key={item.id}> {/* 'key' resolve erro de console */}
-                <td>{item.id}</td>
-                <td>{item.titulo || item.nome_completo || item.CatNome}</td>
-                <td>
-                  <button className="btn btn-sm btn-warning me-2" onClick={() => abrirEdicao(item)}><Edit size={16}/></button>
-                  <button className="btn btn-sm btn-danger" onClick={() => deletarItem(item.id)}><Trash2 size={16}/></button>
-                </td>
-              </tr>
-            ))}
-          </tbody>
+      {/* COLE O CÓDIGO ABAIXO DENTRO DO TBODY */}
+      {dados.map((item) => {
+        // Esta linha garante que pegamos o ID correto de qualquer tabela
+        const idAtual = item.PesID || item.CatID || item.id;
+        
+        return (
+          <tr key={idAtual}>
+            <td>{idAtual}</td>
+            <td>{item.titulo || item.nome_completo || item.CatNome}</td>
+            <td>
+              <button 
+                className="btn btn-sm btn-warning me-2" 
+                onClick={() => abrirEdicao(item)}
+              >
+                <Edit size={16}/>
+              </button>
+              <button 
+                className="btn btn-sm btn-danger" 
+                onClick={() => deletarItem(idAtual)}
+              >
+                <Trash2 size={16}/>
+              </button>
+            </td>
+          </tr>
+        );
+      })}
+    </tbody>
         </table>
       </div>
 
@@ -212,6 +261,7 @@ const Dashboard = () => {
           </div>
         </div>
       )}
+      <Footer />
     </div>
   );
 };
